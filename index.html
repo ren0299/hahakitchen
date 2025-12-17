@@ -499,7 +499,7 @@
         /* 包间与环境板块 */
         .atmosphere-section {
             background: #4A2C2A;
-            background-image: url('image/room1.png');
+            background-image: url('image/room1.jpg');
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
@@ -764,6 +764,13 @@
             z-index: 2001;
         }
 
+        .menu-images-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+        
         .menu-modal-content img {
             width: 100%;
             height: auto;
@@ -774,6 +781,11 @@
             -webkit-user-drag: none;
             transform-origin: center center;
             transition: transform 0.1s ease-out;
+            margin-bottom: 20px;
+        }
+        
+        .menu-modal-content img:last-child {
+            margin-bottom: 0;
         }
 
         .menu-modal-close {
@@ -811,6 +823,9 @@
             .menu-modal-content img {
                 min-width: 100%;
                 max-width: none;
+            }
+            .menu-images-container {
+                gap: 15px;
             }
         }
 
@@ -1359,7 +1374,7 @@
         <div class="menu-modal-backdrop"></div>
         <div class="menu-modal-content">
             <button class="menu-modal-close">×</button>
-            <img id="menuImage" src="" alt="Menu">
+            <div class="menu-images-container" id="menuImagesContainer"></div>
         </div>
     </div>
 
@@ -1767,8 +1782,7 @@
             const enBtn = document.querySelector('.language-switch button:nth-child(1)');
             switchLanguage('en', enBtn);
             
-            // 初始化菜单图片触摸事件
-            initMenuImageTouchEvents();
+            // 触摸事件将在openMenuModal中初始化
 
             // 菜单弹窗点击事件处理
             const menuModal = document.getElementById('menuModal');
@@ -1812,34 +1826,45 @@
             document.body.style.overflow = '';
         }
 
-        // 菜单图片缩放和拖动变量
-        let menuImageScale = 1;
-        let menuImageTranslateX = 0;
-        let menuImageTranslateY = 0;
-        let initialDistance = 0;
-        let initialScale = 1;
-        let lastTouchX = 0;
-        let lastTouchY = 0;
-        let isDragging = false;
+        // 为每张图片创建独立的状态对象
+        function createImageState(img) {
+            return {
+                scale: 1,
+                translateX: 0,
+                translateY: 0,
+                initialDistance: 0,
+                initialScale: 1,
+                lastTouchX: 0,
+                lastTouchY: 0,
+                isDragging: false
+            };
+        }
 
         // 更新图片变换
-        function updateMenuImageTransform(img) {
-            img.style.transform = `translate(${menuImageTranslateX}px, ${menuImageTranslateY}px) scale(${menuImageScale})`;
+        function updateMenuImageTransform(img, state) {
+            img.style.transform = `translate(${state.translateX}px, ${state.translateY}px) scale(${state.scale})`;
         }
 
         // 重置图片变换
         function resetMenuImageTransform(img) {
-            menuImageScale = 1;
-            menuImageTranslateX = 0;
-            menuImageTranslateY = 0;
-            img.style.transform = 'translate(0, 0) scale(1)';
+            if (img._imageState) {
+                img._imageState.scale = 1;
+                img._imageState.translateX = 0;
+                img._imageState.translateY = 0;
+                img.style.transform = 'translate(0, 0) scale(1)';
+            }
         }
 
-        // 初始化菜单图片触摸事件（只绑定一次）
-        function initMenuImageTouchEvents() {
-            const menuImage = document.getElementById('menuImage');
-            if (!menuImage || menuImage._touchEventsInitialized) return;
-            menuImage._touchEventsInitialized = true;
+        // 初始化菜单图片触摸事件
+        function initMenuImageTouchEvents(imgElement) {
+            if (!imgElement || imgElement._touchEventsInitialized) return;
+            imgElement._touchEventsInitialized = true;
+            
+            // 为每张图片创建独立的状态
+            const state = createImageState(imgElement);
+            imgElement._imageState = state;
+            
+            const menuImage = imgElement;
 
             // 触摸开始
             menuImage.addEventListener('touchstart', function(e) {
@@ -1848,16 +1873,16 @@
                     e.preventDefault();
                     const touch1 = e.touches[0];
                     const touch2 = e.touches[1];
-                    initialDistance = Math.hypot(
+                    state.initialDistance = Math.hypot(
                         touch2.clientX - touch1.clientX,
                         touch2.clientY - touch1.clientY
                     );
-                    initialScale = menuImageScale;
+                    state.initialScale = state.scale;
                 } else if (e.touches.length === 1) {
                     // 单指拖动
-                    isDragging = true;
-                    lastTouchX = e.touches[0].clientX;
-                    lastTouchY = e.touches[0].clientY;
+                    state.isDragging = true;
+                    state.lastTouchX = e.touches[0].clientX;
+                    state.lastTouchY = e.touches[0].clientY;
                 }
             }, { passive: false });
 
@@ -1872,27 +1897,27 @@
                         touch2.clientX - touch1.clientX,
                         touch2.clientY - touch1.clientY
                     );
-                    menuImageScale = initialScale * (currentDistance / initialDistance);
+                    state.scale = state.initialScale * (currentDistance / state.initialDistance);
                     // 限制缩放范围
-                    menuImageScale = Math.max(1, Math.min(menuImageScale, 5));
-                    updateMenuImageTransform(menuImage);
-                } else if (e.touches.length === 1 && isDragging && menuImageScale > 1) {
+                    state.scale = Math.max(1, Math.min(state.scale, 5));
+                    updateMenuImageTransform(menuImage, state);
+                } else if (e.touches.length === 1 && state.isDragging && state.scale > 1) {
                     // 单指拖动（仅在缩放状态下）
                     e.preventDefault();
-                    const deltaX = e.touches[0].clientX - lastTouchX;
-                    const deltaY = e.touches[0].clientY - lastTouchY;
-                    menuImageTranslateX += deltaX;
-                    menuImageTranslateY += deltaY;
-                    lastTouchX = e.touches[0].clientX;
-                    lastTouchY = e.touches[0].clientY;
-                    updateMenuImageTransform(menuImage);
+                    const deltaX = e.touches[0].clientX - state.lastTouchX;
+                    const deltaY = e.touches[0].clientY - state.lastTouchY;
+                    state.translateX += deltaX;
+                    state.translateY += deltaY;
+                    state.lastTouchX = e.touches[0].clientX;
+                    state.lastTouchY = e.touches[0].clientY;
+                    updateMenuImageTransform(menuImage, state);
                 }
             }, { passive: false });
 
             // 触摸结束
             menuImage.addEventListener('touchend', function(e) {
                 if (e.touches.length === 0) {
-                    isDragging = false;
+                    state.isDragging = false;
                 }
             });
         }
@@ -1900,40 +1925,68 @@
         // 打开菜单弹窗
         function openMenuModal(type) {
             const menuModal = document.getElementById('menuModal');
-            const menuImage = document.getElementById('menuImage');
+            const menuImagesContainer = document.getElementById('menuImagesContainer');
             
-            // 根据类型设置图片路径
+            // 清空容器
+            menuImagesContainer.innerHTML = '';
+            
+            // 根据类型设置图片
             if (type === 'food') {
-                menuImage.src = 'image/menu.png';
+                // 菜单：显示一张图片
+                const img = document.createElement('img');
+                img.id = 'menuImage';
+                img.src = 'image/menu.png';
+                img.alt = 'Menu';
+                menuImagesContainer.appendChild(img);
+                
+                // 初始化触摸事件
+                if (img.complete) {
+                    initMenuImageTouchEvents(img);
+                } else {
+                    img.onload = function() {
+                        initMenuImageTouchEvents(img);
+                    };
+                }
             } else if (type === 'beverage') {
-                menuImage.src = 'image/beverage.png';
+                // 酒单：显示两张图片
+                const beverageImages = ['image/beverage.png', 'image/beverage2.jpg'];
+                
+                beverageImages.forEach((src, index) => {
+                    const img = document.createElement('img');
+                    img.id = `menuImage${index}`;
+                    img.src = src;
+                    img.alt = `Beverage ${index + 1}`;
+                    menuImagesContainer.appendChild(img);
+                    
+                    // 为每张图片初始化触摸事件
+                    if (img.complete) {
+                        initMenuImageTouchEvents(img);
+                    } else {
+                        img.onload = function() {
+                            initMenuImageTouchEvents(img);
+                        };
+                    }
+                });
             }
-            
-            // 重置变换
-            resetMenuImageTransform(menuImage);
             
             // 显示弹窗
             menuModal.classList.add('active');
             document.body.style.overflow = 'hidden';
-
-            // 初始化触摸事件（如果图片已加载则立即初始化，否则等待加载）
-            if (menuImage.complete) {
-                initMenuImageTouchEvents();
-            } else {
-                menuImage.onload = function() {
-                    initMenuImageTouchEvents();
-                };
-            }
         }
 
         // 关闭菜单弹窗
         function closeMenuModal() {
             const menuModal = document.getElementById('menuModal');
-            const menuImage = document.getElementById('menuImage');
+            const menuImagesContainer = document.getElementById('menuImagesContainer');
+            const images = menuImagesContainer.querySelectorAll('img');
+            
+            // 重置所有图片的变换
+            images.forEach(img => {
+                resetMenuImageTransform(img);
+            });
+            
             menuModal.classList.remove('active');
             document.body.style.overflow = '';
-            // 重置变换
-            resetMenuImageTransform(menuImage);
         }
 
     </script>
