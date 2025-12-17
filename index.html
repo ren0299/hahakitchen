@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haha Kitchen | Melbourne</title>
+    <link rel="icon" type="image/png" href="image/logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --page-max: 1400px;
+            --page-pad: 60px;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #2f2a24;
+            background: #f8f5e7; /* 取自示例图的暖米色 */
+        }
+
+        /* 导航栏 - 白色背景 */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #f8f5e7;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            z-index: 1000;
+            padding: 20px 0;
+        }
+
+        .nav-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 80px;
+            gap: 120px;
+            position: relative;
+        }
+
+        /* 语言切换 */
+        .language-switch {
+            position: absolute;
+            left: 80px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .language-switch button {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: color 0.3s;
+            font-weight: 400;
+            padding: 5px 8px;
+        }
+
+        .language-switch button.active {
+            color: #D97941;
+            font-weight: 500;
+        }
+
+        .language-switch button:hover {
+            color: #D97941;
+        }
+
+        .language-switch span {
+            color: #ddd;
+        }
+
+        /* Logo 居中 */
+        .logo {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .logo img {
+            height: 67px;
+            width: auto;
+        }
+
+        /* 左侧菜单 */
+        .nav-left {
+            display: flex;
+            gap: 60px;
+            list-style: none;
+        }
+
+        /* 右侧菜单 */
+        .nav-right {
+            display: flex;
+            gap: 60px;
+            list-style: none;
+        }
+
+        .nav-left a,
+        .nav-right a {
+            text-decoration: none;
+            color: #2f2a24;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2.3px;
+            transition: color 0.3s;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .nav-left a:hover,
+        .nav-right a:hover {
+            color: #D97941;
+        }
+
+        /* 移动端菜单按钮 */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1002;
+            padding: 5px;
+        }
+
+        .mobile-menu-btn span {
+            width: 28px;
+            height: 3px;
+            background: #D97941;
+            transition: 0.3s;
+        }
+
+        /* 移动端侧边菜单 */
+        .mobile-nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1001;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .mobile-nav-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .mobile-nav-menu {
+            position: fixed;
+            top: 0;
+            right: -350px;
+            width: 350px;
+            height: 100vh;
+            background: #f8f5e7;
+            z-index: 1002;
+            padding: 80px 40px 40px;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        }
+
+        .mobile-nav-menu.active {
+            right: 0;
+        }
+
+        .mobile-nav-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 35px;
+            color: #333;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .mobile-nav-links li {
+            margin-bottom: 30px;
+        }
+
+        .mobile-nav-links a {
+            text-decoration: none;
+            color: #2f2a24;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 400;
+            transition: color 0.3s;
+            display: block;
+        }
+
+        .mobile-nav-links a:hover {
+            color: #D97941;
+        }
+
+        /* Hero 区域 */
+        .hero {
+            margin-top: 110px;
+            height: 85vh;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 轮播渐变遮罩 */
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45));
+            z-index: 1;
+        }
+
+        /* 轮播平滑过渡 */
+        .hero-background {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 1s ease-in-out;
+            opacity: 0;
+        }
+
+        .hero-background.active {
+            opacity: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 70px;
+            margin-bottom: 20px;
+            letter-spacing: 4px;
+            font-weight: 600;
+        }
+
+        .hero-content p {
+            font-size: 22px;
+            letter-spacing: 1.5px;
+            font-weight: 400;
+        }
+
+        /* 关于我们 */
+        .about-section {
+            padding: 120px var(--page-pad) 60px;
+            max-width: var(--page-max);
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 28px;
+            background: #f8f5e7;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 550px;
+            background: linear-gradient(135deg, #f6d8ad 0%, #f1c48f 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 120px;
+        }
+
+        .about-content h2 {
+            font-size: 48px;
+            color: #D97941;
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+
+        .about-content p {
+            font-size: 19px;
+            line-height: 1.8;
+            color: #4a4139;
+            margin-bottom: 0;
+            max-width: 760px;
+        }
+
+        /* 菜单预览 */
+        .menu-preview {
+            background: #f8f5e7;
+            padding: 120px var(--page-pad);
+            max-width: var(--page-max);
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .menu-preview h2 {
+            font-size: 48px;
+            color: #D97941;
+            margin-bottom: 70px;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+
+        .menu-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .menu-card {
+            background: #ffffff;
+            padding: 50px 40px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .menu-card h3 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #2f2a24;
+            font-weight: 400;
+        }
+
+        .menu-card p {
+            color: #4a4139;
+            margin-bottom: 25px;
+            line-height: 1.8;
+        }
+
+        .menu-link {
+            color: #D97941;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        /* 画廊（全幅轮播风格） */
+        .gallery-wrapper {
+            background: #E8E4D9;
+            width: 100%;
+        }
+
+        .gallery {
+            padding: 100px var(--page-pad) 120px;
+            background: #E8E4D9;
+            color: #4a4139;
+        }
+
+        .gallery h2 {
+            font-size: 48px;
+            color: #D97941;
+            margin-bottom: 40px;
+            text-align: center;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+
+        .gallery-slider {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 300px;
+            background: #E8E4D9; /* 与gallery背景一致 */
+            overflow: hidden;
+            border: none;
+            padding: 20px 0;
+            width: 100%;
+        }
+
+        .gallery-track {
+            display: flex;
+            gap: 80px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-slide {
+            flex: 0 0 calc(40% - 40px);
+            width: calc(40% - 40px);
+            aspect-ratio: 4 / 3;
+            min-width: 0;
+            min-height: 0;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        @media (max-width: 768px) {
+            .gallery-slider {
+                height: auto;
+                padding: 0 10px;
+            }
+            .gallery-slide {
+                flex: 0 0 calc(50% - 10px);
+                width: calc(50% - 10px);
+                aspect-ratio: 4 / 3;
+                border-radius: 6px;
+                box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            }
+            .gallery-track {
+                gap: 20px;
+            }
+        }
+
+
+        /* 包间与环境板块 */
+        .atmosphere-section {
+            background: #4A2C2A;
+            background-image: url('image/room1.jpg');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: #ffffff;
+            padding: 100px var(--page-pad);
+            position: relative;
+        }
+
+        /* 添加遮罩层以保持文字可读性 */
+        .atmosphere-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(74, 44, 42, 0.85);
+            z-index: 1;
+        }
+
+        .atmosphere-section .atmosphere-container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .atmosphere-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .atmosphere-content {
+            text-align: left;
+        }
+
+        .atmosphere-section h2 {
+            font-size: 48px;
+            color: #D97941;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .atmosphere-section .body-text {
+            font-size: 18px;
+            line-height: 1.9;
+            color: #ffffff;
+            margin-bottom: 30px;
+        }
+
+        .atmosphere-section .body-text p {
+            margin-bottom: 20px;
+        }
+
+        .atmosphere-info {
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .atmosphere-info-item {
+            margin-bottom: 25px;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #e8e8e8;
+        }
+
+        .atmosphere-info-item strong {
+            color: #D97941;
+            font-weight: 500;
+        }
+
+        .atmosphere-info-item a {
+            color: #e8e8e8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .atmosphere-info-item a:hover {
+            color: #D97941;
+        }
+
+        .hours-content {
+            margin-top: 10px;
+            line-height: 1.8;
+        }
+
+        .hours-content > div {
+            margin-bottom: 5px;
+        }
+
+        .hours-indent {
+            padding-left: 2em;
+        }
+
+        .atmosphere-image {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+        }
+
+        .atmosphere-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .atmosphere-section {
+                padding: 80px 24px;
+                background-attachment: scroll;
+            }
+            .atmosphere-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .atmosphere-content {
+                text-align: center;
+            }
+            .atmosphere-section h2 {
+                font-size: 36px;
+            }
+            .atmosphere-section .body-text {
+                font-size: 16px;
+            }
+            .atmosphere-image {
+                min-height: 300px;
+            }
+        }
+
+        /* 联系信息 */
+        .contact-wrapper {
+            background: #D6D2C4;
+            width: 100%;
+        }
+
+        .contact {
+            background: #D6D2C4;
+            color: #2f2a24;
+            padding: 40px var(--page-pad) 30px;
+            border-top: 1px solid rgba(0,0,0,0.04);
+            max-width: var(--page-max);
+            margin: 0 auto;
+        }
+
+        .contact-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 80px;
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 48px;
+            margin-bottom: 80px;
+            text-align: center;
+            letter-spacing: 3px;
+            font-weight: 300;
+        }
+
+        .contact-item h3 {
+            color: #D97941;
+            font-size: 20px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        .contact-item p {
+            line-height: 2;
+            color: #4a4139;
+            font-size: 15px;
+        }
+
+        .contact-item .hours-content {
+            line-height: 2;
+            color: #4a4139;
+            font-size: 15px;
+        }
+
+        .contact-item .hours-content > div {
+            margin-bottom: 5px;
+        }
+
+        .contact-item .hours-indent {
+            padding-left: 2em;
+        }
+
+        .contact-item a {
+            color: #4a4139;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-item a:hover {
+            color: #D97941;
+        }
+
+        .directions-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: #D97941;
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            transition: background 0.3s;
+            border-radius: 3px;
+        }
+
+        .directions-btn:hover {
+            background: #c16835;
+            color: white;
+        }
+
+        /* 菜单弹窗 */
+        .menu-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .menu-modal.active {
+            display: block;
+        }
+
+        .menu-modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+        }
+
+        .menu-modal-content {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 80px;
+            overflow: auto;
+            height: 100%;
+            -webkit-overflow-scrolling: touch;
+            z-index: 2001;
+        }
+
+        .menu-modal-content img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 5px;
+            touch-action: pan-x pan-y pinch-zoom;
+            user-select: none;
+            -webkit-user-drag: none;
+            transform-origin: center center;
+            transition: transform 0.1s ease-out;
+        }
+
+        .menu-modal-close {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #D97941;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+            z-index: 2002;
+        }
+
+        .menu-modal-close:hover {
+            background: #c16835;
+        }
+
+        @media (max-width: 768px) {
+            .menu-modal {
+                padding: 10px;
+            }
+            .menu-modal-content {
+                padding-top: 60px;
+                overflow: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .menu-modal-content img {
+                min-width: 100%;
+                max-width: none;
+            }
+        }
+
+        /* 页脚 */
+        footer {
+            background: #D6D2C4;
+            color: #746b62;
+            text-align: center;
+            padding: 40px;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        /* 高级推广板块（纯白色） */
+        .promo-wrapper {
+            background-color: transparent;
+            width: 100%;
+        }
+
+        .promo-section {
+            background-color: transparent; /* 背景不变,和大背景融合 */
+            color: #2f2a24;
+            display: flex;
+            gap: 40px;
+            min-height: 520px;
+            overflow: hidden;
+            max-width: var(--page-max);
+            margin: 0 auto;
+            padding: 80px var(--page-pad);
+            align-items: center;
+            /* 上下加边框,营造"区域感" */
+            border-top: 1px solid #D9CBB6;
+            border-bottom: 1px solid #D9CBB6;
+        }
+
+        .promo-content {
+            flex: 1;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 28px;
+        }
+
+        .promo-visual {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .promo-visual-box {
+            width: 80%;
+            aspect-ratio: 4 / 5;
+            background-image: url('image/sit.jpg');
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            box-shadow: 0 12px 38px rgba(0,0,0,0.15);
+        }
+
+        .promo-image {
+            flex: 1;
+            background-image: url('image/front1.jpg'); /* 可替换为你的主视觉图 */
+            background-size: cover;
+            background-position: center;
+            min-height: 520px;
+        }
+
+        .promo-content h2 {
+            font-family: 'Times New Roman', serif;
+            font-size: 56px;
+            color: #D97941;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .promo-content p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #4a4139;
+            margin-bottom: 12px;
+            max-width: 620px;
+        }
+
+        .promo-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .promo-btn {
+            padding: 15px 40px;
+            background-color: #D97941;
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 14px;
+            transition: background 0.3s, color 0.3s, border 0.3s;
+            border: 1px solid #D97941;
+        }
+
+        .promo-btn:hover {
+            background-color: transparent;
+            color: #D97941;
+        }
+
+        @media (max-width: 768px) {
+            .promo-section {
+                flex-direction: column;
+                padding: 80px 24px;
+                gap: 24px;
+            }
+            .promo-content {
+                padding: 0;
+                align-items: center;
+                text-align: center;
+            }
+            .promo-content h2 {
+                font-size: 36px;
+            }
+            .promo-buttons {
+                flex-direction: column;
+                width: 100%;
+                gap: 15px;
+            }
+            .promo-btn {
+                width: 100%;
+                text-align: center;
+            }
+            .promo-visual-box {
+                width: 100%;
+                aspect-ratio: 4 / 5;
+            }
+        }
+
+        /* 招牌菜双栏块（浅色暖调） */
+        .dish-block {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 0;
+            background: #f8f5e7;
+            color: #2f2a24;
+            align-items: stretch;
+            max-width: var(--page-max);
+            margin: 80px auto;
+            padding: 0 var(--page-pad);
+        }
+
+        .dish-block.reverse {
+            grid-template-columns: 1fr 1.1fr;
+        }
+
+        .dish-text {
+            padding: 80px 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #f8f5e7;
+            height: 100%;
+        }
+
+        .dish-block-special {
+            background: #E8E4D9;
+        }
+
+        .dish-block-special .dish-text {
+            background: #E8E4D9;
+        }
+
+        .dish-text h3 {
+            font-size: 40px;
+            letter-spacing: 2px;
+            color: #D97941;
+            margin-bottom: 20px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .dish-text p {
+            font-size: 17px;
+            line-height: 1.9;
+            color: #4a4139;
+            margin-bottom: 18px;
+            max-width: 540px;
+        }
+
+        .dish-photo {
+            background-size: cover;
+            background-position: center;
+            min-height: 320px;
+            height: 100%;
+        }
+
+        .dish-block.reverse .dish-text {
+            order: 2;
+        }
+
+        .dish-block.reverse .dish-photo {
+            order: 1;
+        }
+
+        @media (max-width: 900px) {
+            .dish-block,
+            .dish-block.reverse {
+                grid-template-columns: 1fr;
+            }
+            .dish-text {
+                padding: 60px 30px;
+                text-align: center;
+                align-items: center;
+            }
+            .dish-text h3 {
+                font-size: 32px;
+            }
+            .dish-photo {
+                height: 280px;
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .nav-container {
+                padding: 0 40px;
+                gap: 60px;
+            }
+
+            .language-switch {
+                left: 40px;
+            }
+
+            .nav-left,
+            .nav-right {
+                gap: 35px;
+            }
+
+            .logo img {
+                height: 58px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 0;
+            }
+
+            .nav-container {
+                padding: 0 20px;
+                justify-content: center;
+                gap: 0;
+            }
+
+            .language-switch {
+                left: 20px;
+            }
+
+            .logo img {
+                height: 48px;
+            }
+
+            .nav-left,
+            .nav-right {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+                position: absolute;
+                right: 20px;
+            }
+
+            .hero {
+                height: 70vh;
+                margin-top: 80px;
+            }
+
+            .hero-content h1 {
+                font-size: 40px;
+            }
+
+            .hero-content p {
+                font-size: 16px;
+                padding: 0 20px;
+            }
+
+            .about-section {
+                grid-template-columns: 1fr;
+                padding: 80px 20px;
+                gap: 40px;
+            }
+
+            .about-image {
+                height: 350px;
+            }
+
+            .about-content h2,
+            .menu-preview h2,
+            .gallery h2,
+            .contact h2 {
+                font-size: 32px;
+            }
+
+            .menu-preview,
+            .gallery,
+            .contact {
+                padding: 80px 20px;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .gallery-item {
+                height: 200px;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 32px;
+            }
+
+            .about-content h2,
+            .menu-preview h2,
+            .gallery h2,
+            .contact h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav>
+        <div class="nav-container">
+            <!-- 语言切换 -->
+            <div class="language-switch">
+                <button class="active" onclick="switchLanguage('en', this)">EN</button>
+                <span>|</span>
+                <button onclick="switchLanguage('zh', this)">中文</button>
+            </div>
+
+            <ul class="nav-left" id="navLeft">
+                <li><a href="#about" data-nav-about>About Us</a></li>
+                <li><a href="#promo" data-nav-menu>Menu</a></li>
+            </ul>
+            
+            <a href="#" class="logo">
+                <img src="image/logo.png" alt="Haha Kitchen">
+            </a>
+            
+            <ul class="nav-right" id="navRight">
+                <li><a href="#gallery" data-nav-gallery>Gallery</a></li>
+                <li><a href="#contact" data-nav-contact>Contact</a></li>
+            </ul>
+
+            <button class="mobile-menu-btn" onclick="openMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 移动端侧边菜单 -->
+    <div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
+    <div class="mobile-nav-menu" id="mobileMenu">
+        <button class="mobile-nav-close" onclick="closeMobileMenu()">×</button>
+        <ul class="mobile-nav-links">
+            <li><a href="#about" onclick="closeMobileMenu()" data-nav-about>About Us</a></li>
+            <li><a href="#promo" onclick="closeMobileMenu()" data-nav-menu>Menu</a></li>
+            <li><a href="#gallery" onclick="closeMobileMenu()" data-nav-gallery>Gallery</a></li>
+            <li><a href="#contact" onclick="closeMobileMenu()" data-nav-contact>Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero 区域 -->
+    <section class="hero" id="heroSlider">
+        <div class="hero-background active" id="heroBg1"></div>
+        <div class="hero-background" id="heroBg2"></div>
+        <div class="hero-background" id="heroBg3"></div>
+        <div class="hero-content">
+            <h1 data-hero-title>HAHA KITCHEN</h1>
+            <p data-hero-subtitle>Experience Authentic Flavors & Joyful Dining</p>
+        </div>
+    </section>
+
+    <!-- 关于我们（居中文案，位于 Signature Tasting 之前） -->
+    <section id="about" class="about-section">
+        <div class="about-content" data-aos="fade-up" data-aos-duration="1000">
+            <h2 data-about-title>HAHA KITCHEN</h2>
+            <p data-about-text1>Welcome to Haha Kitchen, where culinary excellence meets warm hospitality. Our name reflects our philosophy - bringing happiness and laughter to every dining experience. Our skilled chefs craft each dish with the finest ingredients, combining traditional techniques with contemporary flair, creating memorable moments around exceptional food.</p>
+        </div>
+    </section>
+
+    <!-- 推广板块示例 -->
+    <div class="promo-wrapper">
+        <section class="promo-section" id="promo">
+            <div class="promo-content" data-aos="fade-right" data-aos-duration="1000">
+                <h2 data-promo-title>Signature Tasting</h2>
+                <p data-promo-text>品尝我们匠心独运的美食佳肴，让福建菜的地道灵魂与南方菜的经典风味完美融合。每一道菜都在讲述关于工艺与创新的故事，让您的每一次用餐，都成为一场触动味蕾与记忆的小型旅程。</p>
+                <div class="promo-buttons">
+                    <a class="promo-btn" href="javascript:void(0);" onclick="openMenuModal('food')" data-promo-menu>Discover Menu</a>
+                    <a class="promo-btn" href="javascript:void(0);" onclick="openMenuModal('beverage')" data-promo-beverage>Discover Beverage</a>
+                </div>
+            </div>
+            <div class="promo-visual" data-aos="fade-left" data-aos-duration="1000">
+                <div class="promo-visual-box"></div>
+            </div>
+        </section>
+    </div>
+    <!-- 招牌菜 1：暖色左文右图 -->
+    <section class="dish-block">
+        <div class="dish-text" data-aos="fade-right" data-aos-duration="1000">
+            <h3 data-dish1-title>Crispy Pork Ribs with Potato Wadges in House Made Dressing</h3>
+            <p data-dish1-desc>A traditional Fuzhou delicacy. Selected pork ribs are fried until crispy on the outside and tender inside, then served with our secret garlic-infused sweet and sour sauce. The perfect balance of sweet and tangy flavors is enhanced by a subtle hint of wine and garlic, creating an irresistible taste that keeps you coming back for more.</p>
+        </div>
+        <div class="dish-photo" style="background-image:url('image/rib.png');" data-aos="fade-left" data-aos-duration="1000"></div>
+    </section>
+
+    <!-- 招牌菜 2：右文左图 -->
+    <section class="dish-block reverse dish-block-special">
+        <div class="dish-photo" style="background-image:url('image/tea.png');" data-aos="fade-right" data-aos-duration="1000"></div>
+        <div class="dish-text" data-aos="fade-left" data-aos-duration="1000">
+            <h3 data-dish2-title>Braised Free Range Chicken with Longjing Tea</h3>
+            <p data-dish2-desc>A signature must-try dish. We use premium free-range chicken, carefully marinated and roasted with Longjing tea. The golden-brown skin is crispy while the meat remains tender and juicy. The elegant tea aroma perfectly balances the richness, delivering a delightful taste that is flavorful yet not greasy.</p>
+        </div>
+    </section>
+
+    <!-- 招牌菜 3：暖色左文右图 -->
+    <section class="dish-block">
+        <div class="dish-text" data-aos="fade-right" data-aos-duration="1000">
+            <h3 data-dish3-title>Radish and Beef Offal Claypot</h3>
+            <p data-dish3-desc>A classic Cantonese favorite. Premium beef offal and sweet white radish are slow-cooked together in a claypot for hours. The offal becomes tender and flavorful, while the radish absorbs the rich essence of the savory broth. Every bite offers a warm and satisfying comfort.</p>
+        </div>
+        <div class="dish-photo" style="background-image:url('image/beef.png');" data-aos="fade-left" data-aos-duration="1000"></div>
+    </section>
+
+    <!-- 菜单弹窗 -->
+    <div class="menu-modal" id="menuModal">
+        <div class="menu-modal-backdrop"></div>
+        <div class="menu-modal-content">
+            <button class="menu-modal-close">×</button>
+            <img id="menuImage" src="" alt="Menu">
+        </div>
+    </div>
+
+    <!-- 包间与环境板块 -->
+    <section class="atmosphere-section">
+        <div class="atmosphere-container">
+            <div class="atmosphere-content" data-aos="fade-right" data-aos-duration="1000">
+                <h2 data-atmosphere-title>A VIBRANT & WARM ATMOSPHERE</h2>
+                <div class="body-text">
+                    <p data-atmosphere-text2>Featuring two exclusive private rooms and bespoke menu options, we curate a one-of-a-kind dining experience for everything from intimate gatherings to corporate events.</p>
+                </div>
+                <div class="atmosphere-info">
+                    <div class="atmosphere-info-item">
+                        <strong data-atmosphere-phone-label>Phone:</strong> <a href="tel:0481224586" data-atmosphere-phone>0481 224 586</a>
+                    </div>
+                    <div class="atmosphere-info-item">
+                        <strong data-atmosphere-email-label>Email:</strong> <a href="mailto:hahakitchen723@gmail.com" data-atmosphere-email>hahakitchen723@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+            <div class="atmosphere-image" data-aos="fade-left" data-aos-duration="1000">
+                <img src="image/Room1.jpg" alt="Private Dining Room">
+            </div>
+        </div>
+    </section>
+
+    <!-- 画廊（全幅轮播） -->
+    <div class="gallery-wrapper">
+        <section id="gallery" class="gallery">
+            <h2 data-gallery-title data-aos="fade-up" data-aos-duration="1000">GALLERY</h2>
+            <div class="gallery-slider" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                <div class="gallery-track" id="galleryTrack"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 联系信息 -->
+    <div class="contact-wrapper">
+        <section id="contact" class="contact">
+            <div class="contact-container">
+                <div class="contact-item" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="0">
+                    <h3 data-opening-hours>Opening Hours</h3>
+                    <div class="hours-content">
+                        <div>Sunday - Thursday: 11:30am - 3:00pm</div>
+                        <div class="hours-indent">5:30pm - 9:30pm</div>
+                        <div>Friday & Saturday: 11:30am - 3:00pm</div>
+                        <div class="hours-indent">5:30pm - 10:30pm</div>
+                    </div>
+                </div>
+                <div class="contact-item" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+                    <h3 data-address>Address</h3>
+                    <p data-address-line1>1 Theatre Pl, Canterbury</p>
+                    <p data-address-line2>VIC 3126, Melbourne</p>
+                    <p data-address-line3>Australia</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=1+Theatre+Pl+Canterbury+VIC+3126" target="_blank" class="directions-btn" data-get-directions>Get Directions</a>
+                </div>
+                <div class="contact-item" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                    <h3 data-contact-info>Contact</h3>
+                    <p><a href="tel:0481224586">0481 224 586</a></p>
+                    <p><a href="mailto:hahakitchen723@gmail.com">info@hahakitchen.com.au</a></p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+    </footer>
+
+    <script>
+        // 语言文本内容
+        const translations = {
+            en: {
+                // 导航栏
+                aboutUs: "About Us",
+                menu: "Menu",
+                gallery: "Gallery",
+                contact: "Contact",
+                
+                // Hero区域
+                heroTitle: "HAHA KITCHEN",
+                heroSubtitle: "Experience Authentic Flavors & Joyful Dining",
+                
+                // 关于我们
+                aboutTitle: "HAHA KITCHEN",
+                aboutText1: "Welcome to Haha Kitchen, where culinary excellence meets warm hospitality. Our name reflects our philosophy - bringing happiness and laughter to every dining experience.",
+                aboutText2: "Our skilled chefs craft each dish with the finest ingredients, combining traditional techniques with contemporary flair. From intimate dinners to celebratory gatherings, we create memorable moments around exceptional food.",
+                aboutText3: "Join us and discover why dining should always be a joyful experience.",
+                
+                // 推广
+                promoTitle: "Signature Tasting",
+                promoText: "Savor our meticulously crafted delicacies, where the authentic soul of Fujian cuisine blends seamlessly with classic Southern flavors. Every dish tells a story of craftsmanship and innovation, transforming your dining experience into an intimate journey of taste and memory",
+                promoMenu: "Discover Menu",
+                promoBeverage: "Discover Beverage",
+                
+                // 画廊
+                galleryTitle: "GALLERY",
+                
+                // 包间与环境
+                atmosphereTitle: "A VIBRANT & WARM ATMOSPHERE",
+                atmosphereText2: "Featuring two exclusive private rooms and bespoke menu options, we curate a one-of-a-kind dining experience for everything from intimate gatherings to corporate events.",
+                atmosphereHoursLabel: "Opening Hours:",
+                atmospherePhoneLabel: "Phone:",
+                atmospherePhone: "0481 224 586",
+                atmosphereEmailLabel: "Email:",
+                atmosphereEmail: "hahakitchen723@gmail.com",
+                
+                // 联系我们
+                contactTitle: "VISIT US",
+                openingHours: "Opening Hours",
+                mondayToSunday: "Tuesday - Sunday",
+                lunch: "Lunch: 11:30am - 3:00pm",
+                dinner: "Dinner: 5:30pm - 10:00pm",
+                mondayClosed: "Monday: Closed",
+                address: "Address",
+                addressLine1: "1 Theatre Pl, Canterbury",
+                addressLine2: "VIC 3126, Melbourne",
+                addressLine3: "Australia",
+                contactInfo: "Contact",
+                getDirections: "Get Directions",
+                
+                // 页脚
+                copyright: "© 2026 Haha Kitchen. All rights reserved.",
+                
+                // 招牌菜
+                dish1Title: "Crispy Pork Ribs with Potato Wadges in House Made Dressing",
+                dish1Desc: "A traditional Fuzhou delicacy. Selected pork ribs are fried until crispy on the outside and tender inside, then served with our secret garlic-infused sweet and sour sauce. The perfect balance of sweet and tangy flavors is enhanced by a subtle hint of wine and garlic, creating an irresistible taste that keeps you coming back for more.",
+                dish2Title: "Braised Free Range Chicken with Longjing Tea",
+                dish2Desc: "A signature must-try dish. We use premium free-range chicken, carefully marinated and roasted with Longjing tea. The golden-brown skin is crispy while the meat remains tender and juicy. The elegant tea aroma perfectly balances the richness, delivering a delightful taste that is flavorful yet not greasy.",
+                dish3Title: "Radish and Beef Offal Claypot",
+                dish3Desc: "A classic Cantonese favorite. Premium beef offal and sweet white radish are slow-cooked together in a claypot for hours. The offal becomes tender and flavorful, while the radish absorbs the rich essence of the savory broth. Every bite offers a warm and satisfying comfort."
+            },
+            zh: {
+                // 导航栏
+                aboutUs: "关于我们",
+                menu: "菜单",
+                gallery: "相册",
+                contact: "联系我们",
+                
+                // Hero区域
+                heroTitle: "哈哈私厨",
+                heroSubtitle: "体验地道美味与欢乐用餐",
+                
+                // 关于我们
+                aboutTitle: "哈哈私厨",
+                aboutText1: "欢迎来到哈哈私厨，在这里卓越的烹饪技艺与温馨的待客之道完美融合。我们的名字反映了我们的理念——为每一次用餐体验带来快乐和欢笑。",
+                aboutText2: "我们技艺精湛的厨师团队用最优质新鲜的食材精心烹制每一道菜品，将传统技艺与现代创意完美结合。无论是私密晚餐还是庆祝聚会，我们都致力于围绕美食创造难忘的时刻。",
+                aboutText3: "加入我们，探索为什么用餐应该永远是一种愉悦的体验。",
+                
+                // 推广
+                promoTitle: "匠心品鉴",
+                promoText: "品尝我们匠心独运的美食佳肴，让福建菜的地道灵魂与南方菜的经典风味完美融合。每一道菜都在讲述关于工艺与创新的故事，让您的每一次用餐，都成为一场触动味蕾与记忆的小型旅程。",
+                promoMenu: "查看菜谱",
+                promoBeverage: "查看酒水",
+                
+                // 画廊
+                galleryTitle: "相册",
+                
+                // 包间与环境
+                atmosphereTitle: "一个温馨的聚会空间",
+                atmosphereText2: "我们设有两间专属包间，并提供菜单定制服务，无论是私密聚会还是商务宴请，都能为您打造独一无二的用餐体验。",
+                atmosphereHoursLabel: "营业时间：",
+                atmospherePhoneLabel: "电话：",
+                atmospherePhone: "0481 224 586",
+                atmosphereEmailLabel: "邮箱：",
+                atmosphereEmail: "hahakitchen723@gmail.com",
+                
+                // 联系我们
+                contactTitle: "欢迎光临",
+                openingHours: "营业时间",
+                mondayToSunday: "周二至周日",
+                lunch: "午餐：11:30am - 3:00pm",
+                dinner: "晚餐：5:30pm - 10:00pm",
+                mondayClosed: "周一：休息",
+                address: "地址",
+                addressLine1: "1 Theatre Pl, Canterbury",
+                addressLine2: "VIC 3126, Melbourne",
+                addressLine3: "澳大利亚",
+                contactInfo: "联系方式",
+                getDirections: "获取路线",
+                
+                // 页脚
+                copyright: "© 2026 哈哈私厨。保留所有权利。",
+                
+                // 招牌菜
+                dish1Title: "醉排骨",
+                dish1Desc: "福州传统名菜。精选排骨炸至外酥里嫩，佐以秘制蒜香糖醋汁，入口酸甜适度，回味中带着一抹醇厚的酒香与蒜香，令人欲罢不能。",
+                dish2Title: "茶香鸡",
+                dish2Desc: "招牌必点。选用优质走地鸡，辅以龙井茶精心腌制并烤制。色泽金黄，皮脆肉嫩，茶香的清雅完美中和了油脂，口感鲜美而不油腻。",
+                dish3Title: "萝卜牛杂煲",
+                dish3Desc: "经典广式风味。精选牛杂与清甜白萝卜在砂锅中慢火煲煮数小时。牛杂软烂入味，萝卜吸饱了浓郁的酱汁精华，每一口都是温暖的满足感。"
+            }
+        };
+
+        // Hero 轮播图片（请将 front1/2/3 放在 image 目录）
+        const heroImages = [
+            'image/front1.jpg',
+            'image/front2.jpg',
+            'image/front3.jpg'
+        ];
+        let heroIndex = 0;
+        let heroTimer = null;
+
+        function initHeroSlider() {
+            const bgs = [
+                document.getElementById('heroBg1'),
+                document.getElementById('heroBg2'),
+                document.getElementById('heroBg3')
+            ];
+
+            // 初始化背景
+            bgs.forEach((bg, i) => {
+                bg.style.backgroundImage = `url('${heroImages[i]}')`;
+            });
+
+            // 切换函数
+            const switchSlide = () => {
+                const prev = heroIndex;
+                heroIndex = (heroIndex + 1) % heroImages.length;
+                bgs[prev].classList.remove('active');
+                bgs[heroIndex].classList.add('active');
+            };
+
+            heroTimer = setInterval(switchSlide, 4000);
+        }
+
+        // Gallery 轮播
+        const galleryImages = [
+            'image/10.jpg',
+            'image/11.jpg',
+            'image/12.jpg',
+            'image/13.jpg',
+            'image/14.jpg',
+            'image/15.jpg',
+            'image/16.jpg',
+            'image/17.jpg',
+            'image/18.jpg',
+        ];
+
+        let galleryTimer = null;
+        let galleryIndex = 0;
+        let gallerySlideWidth = 0;
+
+        function buildGalleryTrack() {
+            const track = document.getElementById('galleryTrack');
+            if (!track) return;
+            const slides = [...galleryImages, ...galleryImages]; // 复制一份用于无缝滚动
+            track.innerHTML = '';
+            slides.forEach(src => {
+                const img = document.createElement('img');
+                img.className = 'gallery-slide';
+                img.src = src;
+                img.alt = 'Gallery';
+                track.appendChild(img);
+            });
+
+            requestAnimationFrame(() => {
+                const first = track.querySelector('.gallery-slide');
+                if (first) {
+                    const rect = first.getBoundingClientRect();
+                    // 根据屏幕宽度确定gap
+                    const isMobile = window.innerWidth <= 768;
+                    const gap = isMobile ? 20 : 80;
+                    gallerySlideWidth = rect.width + gap;
+                }
+                track.style.transform = 'translateX(0)';
+            });
+        }
+
+        function startGalleryMarquee() {
+            const track = document.getElementById('galleryTrack');
+            if (!track || gallerySlideWidth === 0) return;
+            const total = galleryImages.length;
+
+            function step() {
+                galleryIndex = (galleryIndex + 1) % total;
+                track.style.transition = 'transform 1s ease';
+                track.style.transform = `translateX(-${galleryIndex * gallerySlideWidth}px)`;
+
+                // 无缝重置
+                const handle = () => {
+                    track.removeEventListener('transitionend', handle);
+                    if (galleryIndex === 0) {
+                        track.style.transition = 'none';
+                        track.style.transform = 'translateX(0)';
+                    }
+                };
+                track.addEventListener('transitionend', handle);
+            }
+
+            if (galleryTimer) clearInterval(galleryTimer);
+            // 先等2秒，再用1秒动画滚动一张，周期约3秒
+            galleryTimer = setInterval(step, 3000);
+            setTimeout(step, 2000);
+        }
+
+        // 当前语言
+        let currentLang = 'en';
+
+        function switchLanguage(lang, btn) {
+            currentLang = lang;
+            
+            // 更新按钮状态
+            document.querySelectorAll('.language-switch button').forEach(button => {
+                button.classList.remove('active');
+            });
+            if (btn) {
+                btn.classList.add('active');
+            }
+            
+            // 更新所有文本
+            updateContent();
+        }
+
+        function updateContent() {
+            const t = translations[currentLang];
+            
+            // 更新导航栏
+            document.querySelectorAll('[data-nav-about]').forEach(el => el.textContent = t.aboutUs);
+            document.querySelectorAll('[data-nav-menu]').forEach(el => el.textContent = t.menu);
+            document.querySelectorAll('[data-nav-gallery]').forEach(el => el.textContent = t.gallery);
+            document.querySelectorAll('[data-nav-contact]').forEach(el => el.textContent = t.contact);
+            
+            // 小工具：安全设置文本
+            const setText = (selector, value) => {
+                const el = document.querySelector(selector);
+                if (el) el.textContent = value;
+            };
+
+            // 更新Hero区域
+            setText('[data-hero-title]', t.heroTitle);
+            setText('[data-hero-subtitle]', t.heroSubtitle);
+
+            // 更新推广
+            setText('[data-promo-title]', t.promoTitle);
+            setText('[data-promo-text]', t.promoText);
+            setText('[data-promo-menu]', t.promoMenu);
+            setText('[data-promo-beverage]', t.promoBeverage);
+            
+            // 更新关于我们
+            setText('[data-about-title]', t.aboutTitle);
+            setText('[data-about-text1]', t.aboutText1);
+            setText('[data-about-text2]', t.aboutText2);
+            setText('[data-about-text3]', t.aboutText3);
+            
+            // 更新画廊
+            setText('[data-gallery-title]', t.galleryTitle);
+            
+            // 更新包间与环境
+            setText('[data-atmosphere-title]', t.atmosphereTitle);
+            setText('[data-atmosphere-text2]', t.atmosphereText2);
+            setText('[data-atmosphere-phone-label]', t.atmospherePhoneLabel);
+            setText('[data-atmosphere-phone]', t.atmospherePhone);
+            setText('[data-atmosphere-email-label]', t.atmosphereEmailLabel);
+            setText('[data-atmosphere-email]', t.atmosphereEmail);
+            
+            // 更新联系我们
+            setText('[data-opening-hours]', t.openingHours);
+            
+            // 更新营业时间内容
+            const hoursContent = document.querySelector('.contact-item .hours-content');
+            if (hoursContent) {
+                if (currentLang === 'en') {
+                    hoursContent.innerHTML = '<div>Sunday - Thursday: 11:30am - 3:00pm</div><div class="hours-indent">5:30pm - 9:30pm</div><div>Friday & Saturday: 11:30am - 3:00pm</div><div class="hours-indent">5:30pm - 10:30pm</div>';
+                } else {
+                    hoursContent.innerHTML = '<div>周日到周四：11:30 - 15:00</div><div class="hours-indent">17:30 - 21:30</div><div>周五和周六：11:30 - 15:00</div><div class="hours-indent">17:30 - 22:30</div>';
+                }
+            }
+            setText('[data-address]', t.address);
+            setText('[data-address-line1]', t.addressLine1);
+            setText('[data-address-line2]', t.addressLine2);
+            setText('[data-address-line3]', t.addressLine3);
+            setText('[data-contact-info]', t.contactInfo);
+            setText('[data-get-directions]', t.getDirections);
+            
+            // 更新页脚
+            setText('[data-copyright]', t.copyright);
+            
+            // 更新招牌菜
+            setText('[data-dish1-title]', t.dish1Title);
+            setText('[data-dish1-desc]', t.dish1Desc);
+            setText('[data-dish2-title]', t.dish2Title);
+            setText('[data-dish2-desc]', t.dish2Desc);
+            setText('[data-dish3-title]', t.dish3Title);
+            setText('[data-dish3-desc]', t.dish3Desc);
+        }
+
+        // 窗口大小改变时重新构建gallery
+        let resizeTimer = null;
+        window.addEventListener('resize', () => {
+            if (resizeTimer) clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                buildGalleryTrack();
+                setTimeout(startGalleryMarquee, 100);
+            }, 250);
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initHeroSlider();
+            buildGalleryTrack();
+            setTimeout(startGalleryMarquee, 300);
+
+            // 默认英文内容
+            const enBtn = document.querySelector('.language-switch button:nth-child(1)');
+            switchLanguage('en', enBtn);
+            
+            // 初始化菜单图片触摸事件
+            initMenuImageTouchEvents();
+
+            // 菜单弹窗点击事件处理
+            const menuModal = document.getElementById('menuModal');
+            const menuModalBackdrop = menuModal.querySelector('.menu-modal-backdrop');
+            const menuModalClose = menuModal.querySelector('.menu-modal-close');
+            const menuModalContent = menuModal.querySelector('.menu-modal-content');
+
+            // 点击背景关闭
+            if (menuModalBackdrop) {
+                menuModalBackdrop.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    closeMenuModal();
+                });
+            }
+
+            // 点击关闭按钮
+            if (menuModalClose) {
+                menuModalClose.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    closeMenuModal();
+                });
+            }
+
+            // 阻止内容区域的点击事件冒泡
+            if (menuModalContent) {
+                menuModalContent.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+        });
+
+        function openMobileMenu() {
+            document.getElementById('mobileMenu').classList.add('active');
+            document.getElementById('mobileOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileMenu').classList.remove('active');
+            document.getElementById('mobileOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // 菜单图片缩放和拖动变量
+        let menuImageScale = 1;
+        let menuImageTranslateX = 0;
+        let menuImageTranslateY = 0;
+        let initialDistance = 0;
+        let initialScale = 1;
+        let lastTouchX = 0;
+        let lastTouchY = 0;
+        let isDragging = false;
+
+        // 更新图片变换
+        function updateMenuImageTransform(img) {
+            img.style.transform = `translate(${menuImageTranslateX}px, ${menuImageTranslateY}px) scale(${menuImageScale})`;
+        }
+
+        // 重置图片变换
+        function resetMenuImageTransform(img) {
+            menuImageScale = 1;
+            menuImageTranslateX = 0;
+            menuImageTranslateY = 0;
+            img.style.transform = 'translate(0, 0) scale(1)';
+        }
+
+        // 初始化菜单图片触摸事件（只绑定一次）
+        function initMenuImageTouchEvents() {
+            const menuImage = document.getElementById('menuImage');
+            if (!menuImage || menuImage._touchEventsInitialized) return;
+            menuImage._touchEventsInitialized = true;
+
+            // 触摸开始
+            menuImage.addEventListener('touchstart', function(e) {
+                if (e.touches.length === 2) {
+                    // 双指缩放
+                    e.preventDefault();
+                    const touch1 = e.touches[0];
+                    const touch2 = e.touches[1];
+                    initialDistance = Math.hypot(
+                        touch2.clientX - touch1.clientX,
+                        touch2.clientY - touch1.clientY
+                    );
+                    initialScale = menuImageScale;
+                } else if (e.touches.length === 1) {
+                    // 单指拖动
+                    isDragging = true;
+                    lastTouchX = e.touches[0].clientX;
+                    lastTouchY = e.touches[0].clientY;
+                }
+            }, { passive: false });
+
+            // 触摸移动
+            menuImage.addEventListener('touchmove', function(e) {
+                if (e.touches.length === 2) {
+                    // 双指缩放
+                    e.preventDefault();
+                    const touch1 = e.touches[0];
+                    const touch2 = e.touches[1];
+                    const currentDistance = Math.hypot(
+                        touch2.clientX - touch1.clientX,
+                        touch2.clientY - touch1.clientY
+                    );
+                    menuImageScale = initialScale * (currentDistance / initialDistance);
+                    // 限制缩放范围
+                    menuImageScale = Math.max(1, Math.min(menuImageScale, 5));
+                    updateMenuImageTransform(menuImage);
+                } else if (e.touches.length === 1 && isDragging && menuImageScale > 1) {
+                    // 单指拖动（仅在缩放状态下）
+                    e.preventDefault();
+                    const deltaX = e.touches[0].clientX - lastTouchX;
+                    const deltaY = e.touches[0].clientY - lastTouchY;
+                    menuImageTranslateX += deltaX;
+                    menuImageTranslateY += deltaY;
+                    lastTouchX = e.touches[0].clientX;
+                    lastTouchY = e.touches[0].clientY;
+                    updateMenuImageTransform(menuImage);
+                }
+            }, { passive: false });
+
+            // 触摸结束
+            menuImage.addEventListener('touchend', function(e) {
+                if (e.touches.length === 0) {
+                    isDragging = false;
+                }
+            });
+        }
+
+        // 打开菜单弹窗
+        function openMenuModal(type) {
+            const menuModal = document.getElementById('menuModal');
+            const menuImage = document.getElementById('menuImage');
+            
+            // 根据类型设置图片路径
+            if (type === 'food') {
+                menuImage.src = 'image/menu.png';
+            } else if (type === 'beverage') {
+                menuImage.src = 'image/beverage.png';
+            }
+            
+            // 重置变换
+            resetMenuImageTransform(menuImage);
+            
+            // 显示弹窗
+            menuModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // 初始化触摸事件（如果图片已加载则立即初始化，否则等待加载）
+            if (menuImage.complete) {
+                initMenuImageTouchEvents();
+            } else {
+                menuImage.onload = function() {
+                    initMenuImageTouchEvents();
+                };
+            }
+        }
+
+        // 关闭菜单弹窗
+        function closeMenuModal() {
+            const menuModal = document.getElementById('menuModal');
+            const menuImage = document.getElementById('menuImage');
+            menuModal.classList.remove('active');
+            document.body.style.overflow = '';
+            // 重置变换
+            resetMenuImageTransform(menuImage);
+        }
+
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            easing: 'ease-out',
+            once: true,
+            offset: 100
+        });
+    </script>
+</body>
+</html>
