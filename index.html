@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Haha Kitchen | Melbourne</title>
     <link rel="icon" type="image/png" href="image/logo.png">
     <style>
@@ -12,17 +12,59 @@
             padding: 0;
             box-sizing: border-box;
         }
+        
+        /* 确保所有主要容器在移动端正确显示 */
+        @media (max-width: 768px) {
+            section, div[class*="section"], div[class*="wrapper"] {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+                position: relative;
+            }
+            
+            /* 确保所有文本内容不被截断 */
+            p, h1, h2, h3, h4, h5, h6 {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                max-width: 100%;
+            }
+        }
 
         :root {
             --page-max: 1400px;
             --page-pad: 60px;
         }
+        
+        @media (max-width: 768px) {
+            :root {
+                --page-pad: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            :root {
+                --page-pad: 15px;
+            }
+        }
 
+        html {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+            position: relative;
+        }
+        
         body {
             font-family: 'Cormorant Garamond', 'Times New Roman', serif;
             line-height: 1.6;
             color: #2f2a24;
             background: #f8f5e7; /* 取自示例图的暖米色 */
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+            position: relative;
+            margin: 0;
+            padding: 0;
         }
 
         /* 导航栏 - 白色背景 */
@@ -254,6 +296,8 @@
             background-position: center;
             transition: opacity 1s ease-in-out;
             opacity: 0;
+            width: 100%;
+            height: 100%;
         }
 
         .hero-background.active {
@@ -289,6 +333,8 @@
             text-align: center;
             gap: 28px;
             background: #f8f5e7;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .about-image {
@@ -315,6 +361,9 @@
             color: #4a4139;
             margin-bottom: 0;
             max-width: 760px;
+            width: 100%;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         /* 菜单预览 */
@@ -559,6 +608,7 @@
         .atmosphere-image img {
             width: 100%;
             height: 100%;
+            max-width: 100%;
             object-fit: cover;
             border-radius: 8px;
             box-shadow: 0 12px 30px rgba(0,0,0,0.3);
@@ -778,6 +828,9 @@
         .promo-wrapper {
             background-color: transparent;
             width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            box-sizing: border-box;
         }
 
         .promo-section {
@@ -791,6 +844,8 @@
             margin: 0 auto;
             padding: 80px var(--page-pad);
             align-items: center;
+            width: 100%;
+            box-sizing: border-box;
             /* 上下加边框,营造"区域感" */
             border-top: 1px solid #D9CBB6;
             border-bottom: 1px solid #D9CBB6;
@@ -804,6 +859,8 @@
             justify-content: center;
             align-items: flex-start;
             gap: 28px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .promo-visual {
@@ -821,6 +878,7 @@
             background-position: center;
             border-radius: 12px;
             box-shadow: 0 12px 38px rgba(0,0,0,0.15);
+            max-width: 100%;
         }
 
         .promo-image {
@@ -847,6 +905,9 @@
             color: #4a4139;
             margin-bottom: 12px;
             max-width: 620px;
+            width: 100%;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         .promo-buttons {
@@ -875,29 +936,57 @@
         @media (max-width: 768px) {
             .promo-section {
                 flex-direction: column;
-                padding: 80px 24px;
+                padding: 80px 20px;
                 gap: 24px;
+                width: 100%;
+                box-sizing: border-box;
             }
             .promo-content {
                 padding: 0;
                 align-items: center;
                 text-align: center;
+                width: 100%;
+                box-sizing: border-box;
             }
             .promo-content h2 {
                 font-size: 36px;
+                width: 100%;
+                padding: 0;
+            }
+            .promo-content p {
+                width: 100%;
+                max-width: 100%;
+                padding: 0 10px;
+                box-sizing: border-box;
             }
             .promo-buttons {
                 flex-direction: column;
                 width: 100%;
                 gap: 15px;
+                padding: 0;
+                box-sizing: border-box;
             }
             .promo-btn {
                 width: 100%;
                 text-align: center;
+                box-sizing: border-box;
             }
             .promo-visual-box {
                 width: 100%;
                 aspect-ratio: 4 / 5;
+                max-width: 100%;
+            }
+        }
+        
+        /* 确保所有图片和容器在移动端正确显示 */
+        @media (max-width: 768px) {
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+            
+            .gallery-slide {
+                max-width: 100%;
             }
         }
 
@@ -1036,23 +1125,42 @@
             }
 
             .hero {
-                height: 70vh;
+                height: 60vh;
+                min-height: 400px;
+                max-height: 600px;
                 margin-top: 80px;
             }
 
             .hero-content h1 {
-                font-size: 40px;
+                font-size: 36px;
+                letter-spacing: 2px;
             }
 
             .hero-content p {
-                font-size: 16px;
+                font-size: 15px;
                 padding: 0 20px;
+                letter-spacing: 1px;
             }
 
             .about-section {
                 grid-template-columns: 1fr;
                 padding: 80px 20px;
                 gap: 40px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            
+            .about-content {
+                width: 100%;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            .about-content p {
+                width: 100%;
+                padding: 0;
+                max-width: 100%;
+                box-sizing: border-box;
             }
 
             .about-image {
@@ -1093,15 +1201,47 @@
         }
 
         @media (max-width: 480px) {
+            .hero {
+                height: 55vh;
+                min-height: 350px;
+                max-height: 500px;
+            }
+            
             .hero-content h1 {
-                font-size: 32px;
+                font-size: 28px;
+                letter-spacing: 1.5px;
+                margin-bottom: 15px;
             }
 
+            .hero-content p {
+                font-size: 14px;
+                padding: 0 15px;
+            }
+
+            .about-section {
+                padding: 60px 15px;
+            }
+            
             .about-content h2,
             .menu-preview h2,
             .gallery h2,
             .contact h2 {
                 font-size: 28px;
+            }
+            
+            .promo-section {
+                padding: 60px 15px;
+            }
+            
+            .promo-content p {
+                padding: 0 5px;
+                font-size: 16px;
+            }
+            
+            /* 确保所有图片在移动端正确显示 */
+            img {
+                max-width: 100%;
+                height: auto;
             }
         }
     </style>
@@ -1241,7 +1381,7 @@
                 </div>
             </div>
             <div class="atmosphere-image" data-aos="fade-left" data-aos-duration="1000">
-                <img src="image/room1.png" alt="Private Dining Room">
+                <img src="image/Room1.jpg" alt="Private Dining Room">
             </div>
         </div>
     </section>
