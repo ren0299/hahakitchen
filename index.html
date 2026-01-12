@@ -1644,17 +1644,8 @@
         }
 
         // Gallery 轮播
-        const galleryImages = [
-            'image/10.jpg',
-            'image/11.jpg',
-            'image/12.jpg',
-            'image/13.jpg',
-            'image/14.jpg',
-            'image/15.jpg',
-            'image/16.jpg',
-            'image/17.jpg',
-            'image/18.jpg',
-        ];
+        const galleryImages = Array.from({length: 21}, (_, i) => `image/${i + 10}.jpg`);
+        
 
         let galleryTimer = null;
         let galleryIndex = 0;
