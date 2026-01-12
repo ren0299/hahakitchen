@@ -20,19 +20,20 @@
     <meta property="og:url" content="https://www.hahakitchen.com.au/">
     <meta property="og:title" content="Haha Kitchen | Melbourne">
     <meta property="og:description" content="Experience Authentic Flavors & Joyful Dining. Welcome to Haha Kitchen, where culinary excellence meets warm hospitality.">
-    <meta property="og:image" content="https://www.hahakitchen.com.au/image/og.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
+    <meta property="og:image" content="https://www.hahakitchen.com.au/image/logo.png">
+    <meta property="og:image:secure_url" content="https://www.hahakitchen.com.au/image/logo.png">
     <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="Haha Kitchen Logo">
     <meta property="og:site_name" content="Haha Kitchen">
     <meta property="og:locale" content="en_US">
     
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:card" content="summary">
     <meta name="twitter:url" content="https://www.hahakitchen.com.au/">
     <meta name="twitter:title" content="Haha Kitchen | Melbourne">
     <meta name="twitter:description" content="Experience Authentic Flavors & Joyful Dining. Welcome to Haha Kitchen, where culinary excellence meets warm hospitality.">
-    <meta name="twitter:image" content="https://www.hahakitchen.com.au/image/og.png">
+    <meta name="twitter:image" content="https://www.hahakitchen.com.au/image/logo.png">
+    <meta name="twitter:image:alt" content="Haha Kitchen Logo">
     
     <!-- Additional Meta Tags -->
     <meta name="description" content="Experience Authentic Flavors & Joyful Dining. Welcome to Haha Kitchen, where culinary excellence meets warm hospitality. Located in Melbourne, Australia.">
@@ -41,7 +42,7 @@
     <!-- WeChat / QQ Specific -->
     <meta itemprop="name" content="Haha Kitchen | Melbourne">
     <meta itemprop="description" content="Experience Authentic Flavors & Joyful Dining. Welcome to Haha Kitchen, where culinary excellence meets warm hospitality.">
-    <meta itemprop="image" content="https://www.hahakitchen.com.au/image/og.png">
+    <meta itemprop="image" content="https://www.hahakitchen.com.au/image/logo.png">
     
     <!-- Additional tags for better WeChat compatibility -->
     <meta name="format-detection" content="telephone=no">
@@ -50,7 +51,28 @@
     <meta name="apple-mobile-web-app-title" content="Haha Kitchen">
     
     <!-- Ensure image is accessible -->
-    <link rel="image_src" href="https://www.hahakitchen.com.au/image/og.png">
+    <link rel="image_src" href="https://www.hahakitchen.com.au/image/logo.png">
+    
+    <!-- JSON-LD Structured Data for Google Search -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "Haha Kitchen",
+      "image": "https://www.hahakitchen.com.au/image/logo.png",
+      "logo": "https://www.hahakitchen.com.au/image/logo.png",
+      "description": "Experience Authentic Flavors & Joyful Dining. Welcome to Haha Kitchen, where culinary excellence meets warm hospitality.",
+      "url": "https://www.hahakitchen.com.au/",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Melbourne",
+        "addressCountry": "AU"
+      },
+      "servesCuisine": ["Chinese", "Fujian", "Cantonese"],
+      "priceRange": "$$"
+    }
+    </script>
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
         * {
