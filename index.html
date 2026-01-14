@@ -1438,6 +1438,7 @@
                 <div class="promo-buttons">
                     <a class="promo-btn" href="javascript:void(0);" onclick="openMenuModal('food')" data-promo-menu>Discover Menu</a>
                     <a class="promo-btn" href="javascript:void(0);" onclick="openMenuModal('beverage')" data-promo-beverage>Discover Beverage</a>
+                    <a class="promo-btn" href="https://www.facebook.com/HahaKitchenCanterbury" target="_blank" data-promo-reservations>Reservations</a>
                 </div>
             </div>
             <div class="promo-visual" data-aos="fade-left" data-aos-duration="1000">
@@ -1488,6 +1489,7 @@
                 <h2 data-atmosphere-title>A VIBRANT & WARM ATMOSPHERE</h2>
                 <div class="body-text">
                     <p data-atmosphere-text2>Featuring two exclusive private rooms and bespoke menu options, we curate a one-of-a-kind dining experience for everything from intimate gatherings to corporate events.</p>
+                    <p data-atmosphere-text3>For VIP menu details and private dining inquiries, please contact us directly.</p>
                 </div>
                 <div class="atmosphere-info">
                     <div class="atmosphere-info-item">
@@ -1495,6 +1497,9 @@
                     </div>
                     <div class="atmosphere-info-item">
                         <strong data-atmosphere-email-label>Email:</strong> <a href="mailto:hahakitchen723@gmail.com" data-atmosphere-email>hahakitchen723@gmail.com</a>
+                    </div>
+                    <div class="atmosphere-info-item">
+                        <strong data-atmosphere-wechat-label>WeChat:</strong> <span data-atmosphere-wechat>haha_kitchen</span>
                     </div>
                 </div>
             </div>
@@ -1581,6 +1586,7 @@
                 promoText: "Savor our meticulously crafted delicacies, where the authentic soul of Fujian cuisine blends seamlessly with classic Southern flavors. Every dish tells a story of craftsmanship and innovation, transforming your dining experience into an intimate journey of taste and memory",
                 promoMenu: "Discover Menu",
                 promoBeverage: "Discover Beverage",
+                promoReservations: "Reservations",
                 
                 // 画廊
                 galleryTitle: "GALLERY",
@@ -1588,11 +1594,14 @@
                 // 包间与环境
                 atmosphereTitle: "A VIBRANT & WARM ATMOSPHERE",
                 atmosphereText2: "Featuring two exclusive private rooms and bespoke menu options, we curate a one-of-a-kind dining experience for everything from intimate gatherings to corporate events.",
+                atmosphereText3: "For VIP menu details and private dining inquiries, please contact us directly.",
                 atmosphereHoursLabel: "Opening Hours:",
                 atmospherePhoneLabel: "Phone:",
                 atmospherePhone: "0481 224 586",
                 atmosphereEmailLabel: "Email:",
                 atmosphereEmail: "hahakitchen723@gmail.com",
+                atmosphereWechatLabel: "WeChat:",
+                atmosphereWechat: "haha_kitchen",
                 
                 // 联系我们
                 contactTitle: "VISIT US",
@@ -1642,6 +1651,7 @@
                 promoText: "品尝我们匠心独运的美食佳肴，让福建菜的地道灵魂与南方菜的经典风味完美融合。每一道菜都在讲述关于工艺与创新的故事，让您的每一次用餐，都成为一场触动味蕾与记忆的小型旅程。",
                 promoMenu: "查看菜谱",
                 promoBeverage: "查看酒水",
+                promoReservations: "立即预订",
                 
                 // 画廊
                 galleryTitle: "相册",
@@ -1649,11 +1659,14 @@
                 // 包间与环境
                 atmosphereTitle: "一个温馨的聚会空间",
                 atmosphereText2: "我们设有两间专属包间，并提供菜单定制服务，无论是私密聚会还是商务宴请，都能为您打造独一无二的用餐体验。",
+                atmosphereText3: "如需VIP菜单详情和包间预订咨询，请直接联系我们。",
                 atmosphereHoursLabel: "营业时间：",
                 atmospherePhoneLabel: "电话：",
                 atmospherePhone: "0481 224 586",
                 atmosphereEmailLabel: "邮箱：",
                 atmosphereEmail: "hahakitchen723@gmail.com",
+                atmosphereWechatLabel: "微信：",
+                atmosphereWechat: "haha_kitchen",
                 
                 // 联系我们
                 contactTitle: "欢迎光临",
@@ -1818,6 +1831,7 @@
             setText('[data-promo-text]', t.promoText);
             setText('[data-promo-menu]', t.promoMenu);
             setText('[data-promo-beverage]', t.promoBeverage);
+            setText('[data-promo-reservations]', t.promoReservations);
             
             // 更新关于我们
             setText('[data-about-title]', t.aboutTitle);
@@ -1831,10 +1845,13 @@
             // 更新包间与环境
             setText('[data-atmosphere-title]', t.atmosphereTitle);
             setText('[data-atmosphere-text2]', t.atmosphereText2);
+            setText('[data-atmosphere-text3]', t.atmosphereText3);
             setText('[data-atmosphere-phone-label]', t.atmospherePhoneLabel);
             setText('[data-atmosphere-phone]', t.atmospherePhone);
             setText('[data-atmosphere-email-label]', t.atmosphereEmailLabel);
             setText('[data-atmosphere-email]', t.atmosphereEmail);
+            setText('[data-atmosphere-wechat-label]', t.atmosphereWechatLabel);
+            setText('[data-atmosphere-wechat]', t.atmosphereWechat);
             
             // 更新联系我们
             setText('[data-opening-hours]', t.openingHours);
