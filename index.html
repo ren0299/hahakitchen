@@ -533,33 +533,55 @@
             justify-content: center;
         }
 
-        .gallery-slide {
+        .gallery-slide-wrap {
+            position: relative;
+            z-index: 1;
             flex: 0 0 calc(40% - 40px);
             width: calc(40% - 40px);
             aspect-ratio: 4 / 3;
             min-width: 0;
             min-height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            transform-origin: center center;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        .gallery-slide-wrap:hover {
+            transform: scale(1.2);
+            z-index: 10;
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery-slide {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             object-position: center;
             display: block;
-            border-radius: 8px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
         }
 
         @media (max-width: 768px) {
             .gallery-slider {
                 height: auto;
-                padding: 0 10px;
+                padding: 0;
             }
-            .gallery-slide {
-                flex: 0 0 calc(50% - 10px);
-                width: calc(50% - 10px);
+            .gallery-slide-wrap {
+                flex: 0 0 auto;
+                width: auto;
+                max-width: none;
                 aspect-ratio: 4 / 3;
                 border-radius: 6px;
                 box-shadow: 0 6px 15px rgba(0,0,0,0.1);
             }
             .gallery-track {
-                gap: 20px;
+                justify-content: flex-start;
+            }
+            .gallery-slide-wrap .gallery-slide {
+                width: 100%;
+                height: 100%;
+                max-width: none;
             }
         }
 
@@ -678,6 +700,9 @@
             width: 100%;
             height: 100%;
             min-height: 400px;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
         }
 
         .atmosphere-image img {
@@ -685,8 +710,12 @@
             height: 100%;
             max-width: 100%;
             object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .atmosphere-image:hover img {
+            transform: scale(1.25);
         }
 
         @media (max-width: 768px) {
@@ -709,6 +738,9 @@
             }
             .atmosphere-image {
                 min-height: 300px;
+            }
+            .atmosphere-wechat-row {
+                justify-content: center;
             }
         }
 
@@ -1226,8 +1258,13 @@
                 height: auto;
             }
             
-            .gallery-slide {
+            .gallery-slide-wrap {
                 max-width: 100%;
+            }
+
+            .gallery-slide-wrap .gallery-slide {
+                height: 100%;
+                max-width: none;
             }
         }
 
@@ -1608,7 +1645,7 @@
     <section class="atmosphere-section">
         <div class="atmosphere-container">
             <div class="atmosphere-content" data-aos="fade-right" data-aos-duration="1000">
-                <h2 data-atmosphere-title>A VIBRANT & WARM ATMOSPHERE</h2>
+                <h2 data-atmosphere-title>PRIVATE DINING & EVENTS</h2>
                 <div class="body-text">
                     <p data-atmosphere-text2>Featuring two exclusive private rooms and bespoke menu options, we curate a one-of-a-kind dining experience for everything from intimate gatherings to corporate events.</p>
                     <p data-atmosphere-text3>For VIP menu details and private dining inquiries, please contact us directly.</p>
@@ -1732,7 +1769,7 @@
                 galleryTitle: "GALLERY",
                 
                 // 包间与环境
-                atmosphereTitle: "A VIBRANT & WARM ATMOSPHERE",
+                atmosphereTitle: "PRIVATE DINING & EVENTS",
                 atmosphereText2: "Featuring two exclusive private rooms and bespoke menu options, we curate a one-of-a-kind dining experience for everything from intimate gatherings to corporate events.",
                 atmosphereText3: "For VIP menu details and private dining inquiries, please contact us directly.",
                 atmosphereHoursLabel: "Opening Hours:",
@@ -1795,7 +1832,7 @@
                 galleryTitle: "相册",
                 
                 // 包间与环境
-                atmosphereTitle: "一个温馨的聚会空间",
+                atmosphereTitle: "包厢/聚会",
                 atmosphereText2: "我们设有两间专属包间，并提供菜单定制服务，无论是私密聚会还是商务宴请，都能为您打造独一无二的用餐体验。",
                 atmosphereText3: "如需VIP菜单详情和包间预订咨询，请直接联系我们。",
                 atmosphereHoursLabel: "营业时间：",
@@ -1872,6 +1909,83 @@
         let galleryTimer = null;
         let galleryIndex = 0;
         let gallerySlideWidth = 0;
+        let galleryMobileOffset = 0;
+        let galleryHoverBound = false;
+
+        function getGalleryTransform(index) {
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                return `translateX(${galleryMobileOffset - index * gallerySlideWidth}px)`;
+            }
+            return `translateX(-${index * gallerySlideWidth}px)`;
+        }
+
+        function pauseGalleryMarquee() {
+            if (galleryTimer) {
+                clearInterval(galleryTimer);
+                galleryTimer = null;
+            }
+        }
+
+        function resumeGalleryMarquee() {
+            if (!galleryTimer) {
+                startGalleryMarquee();
+            }
+        }
+
+        function bindGalleryHoverPause() {
+            const track = document.getElementById('galleryTrack');
+            const slider = document.querySelector('.gallery-slider');
+            if (!track || !slider) return;
+
+            track.querySelectorAll('.gallery-slide-wrap').forEach(wrap => {
+                wrap.addEventListener('mouseenter', pauseGalleryMarquee);
+            });
+
+            if (!galleryHoverBound) {
+                galleryHoverBound = true;
+                slider.addEventListener('mouseleave', (e) => {
+                    if (!e.relatedTarget || !slider.contains(e.relatedTarget)) {
+                        resumeGalleryMarquee();
+                    }
+                });
+            }
+        }
+
+        function measureGallerySlideWidth() {
+            const track = document.getElementById('galleryTrack');
+            const slider = document.querySelector('.gallery-slider');
+            if (!track || !slider) return;
+
+            const isMobile = window.innerWidth <= 768;
+            const gap = isMobile ? 0 : 80;
+            const wraps = track.querySelectorAll('.gallery-slide-wrap');
+
+            if (isMobile) {
+                const sliderWidth = Math.round(slider.getBoundingClientRect().width);
+                const slideWidth = Math.round(sliderWidth * 0.8);
+                const mobileGap = Math.round(sliderWidth * 0.2);
+                track.style.gap = `${mobileGap}px`;
+                galleryMobileOffset = Math.round((sliderWidth - slideWidth) / 2);
+                wraps.forEach(w => {
+                    w.style.flex = `0 0 ${slideWidth}px`;
+                    w.style.width = `${slideWidth}px`;
+                });
+                gallerySlideWidth = slideWidth + mobileGap;
+                track.style.transform = getGalleryTransform(galleryIndex);
+            } else {
+                galleryMobileOffset = 0;
+                track.style.gap = '';
+                wraps.forEach(w => {
+                    w.style.flex = '';
+                    w.style.width = '';
+                });
+                const first = wraps[0];
+                if (first) {
+                    gallerySlideWidth = first.getBoundingClientRect().width + gap;
+                }
+            }
+        }
 
         function buildGalleryTrack() {
             const track = document.getElementById('galleryTrack');
@@ -1879,24 +1993,23 @@
             const slides = [...galleryImages, ...galleryImages]; // 复制一份用于无缝滚动
             track.innerHTML = '';
             slides.forEach(src => {
+                const wrap = document.createElement('div');
+                wrap.className = 'gallery-slide-wrap';
                 const img = document.createElement('img');
                 img.className = 'gallery-slide';
                 img.src = src;
                 img.alt = 'Gallery';
-                track.appendChild(img);
+                wrap.appendChild(img);
+                track.appendChild(wrap);
             });
 
             requestAnimationFrame(() => {
-                const first = track.querySelector('.gallery-slide');
-                if (first) {
-                    const rect = first.getBoundingClientRect();
-                    // 根据屏幕宽度确定gap
-                    const isMobile = window.innerWidth <= 768;
-                    const gap = isMobile ? 20 : 80;
-                    gallerySlideWidth = rect.width + gap;
-                }
-                track.style.transform = 'translateX(0)';
+                galleryIndex = 0;
+                measureGallerySlideWidth();
+                track.style.transform = getGalleryTransform(0);
             });
+
+            bindGalleryHoverPause();
         }
 
         function startGalleryMarquee() {
@@ -1907,14 +2020,14 @@
             function step() {
                 galleryIndex = (galleryIndex + 1) % total;
                 track.style.transition = 'transform 1s ease';
-                track.style.transform = `translateX(-${galleryIndex * gallerySlideWidth}px)`;
+                track.style.transform = getGalleryTransform(galleryIndex);
 
                 // 无缝重置
                 const handle = () => {
                     track.removeEventListener('transitionend', handle);
                     if (galleryIndex === 0) {
                         track.style.transition = 'none';
-                        track.style.transform = 'translateX(0)';
+                        track.style.transform = getGalleryTransform(0);
                     }
                 };
                 track.addEventListener('transitionend', handle);
@@ -2027,8 +2140,15 @@
         window.addEventListener('resize', () => {
             if (resizeTimer) clearTimeout(resizeTimer);
             resizeTimer = setTimeout(() => {
-                buildGalleryTrack();
-                setTimeout(startGalleryMarquee, 100);
+                const track = document.getElementById('galleryTrack');
+                if (track && track.children.length) {
+                    measureGallerySlideWidth();
+                    track.style.transform = getGalleryTransform(galleryIndex);
+                    if (!galleryTimer) startGalleryMarquee();
+                } else {
+                    buildGalleryTrack();
+                    setTimeout(startGalleryMarquee, 100);
+                }
             }, 250);
         });
 
