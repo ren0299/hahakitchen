@@ -654,6 +654,13 @@
             color: #D97941;
         }
 
+        .atmosphere-wechat-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
         .hours-content {
             margin-top: 10px;
             line-height: 1.8;
@@ -795,14 +802,136 @@
             text-decoration: none;
         }
 
-        .social-icon svg {
+        .social-icon svg,
+        .social-icon img {
             width: 24px;
             height: 24px;
+            display: block;
+            object-fit: contain;
         }
 
         .social-icon:hover {
             color: #D97941;
             transform: translateY(-2px);
+        }
+
+        button.social-icon {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .contact-wechat-line {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 0;
+            line-height: 2;
+            color: #4a4139;
+            font-size: 15px;
+        }
+
+        .contact-wechat-line strong {
+            color: #4a4139;
+            font-weight: 400;
+        }
+
+        .wechat-icon-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+            vertical-align: middle;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .wechat-icon-btn img {
+            width: 20px;
+            height: 20px;
+            display: block;
+            object-fit: contain;
+        }
+
+        .wechat-icon-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.85;
+        }
+
+        /* 微信二维码弹窗 */
+        .wechat-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .wechat-modal.active {
+            display: flex;
+        }
+
+        .wechat-modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2100;
+        }
+
+        .wechat-modal-panel {
+            position: relative;
+            z-index: 2101;
+            max-width: min(360px, 90vw);
+            width: 100%;
+            background: #fff;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .wechat-modal-panel img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 4px;
+        }
+
+        .wechat-modal-close {
+            position: absolute;
+            top: -14px;
+            right: -14px;
+            background: #D97941;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 26px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+            z-index: 2102;
+        }
+
+        .wechat-modal-close:hover {
+            background: #c16835;
         }
 
         .directions-btn {
@@ -1491,8 +1620,12 @@
                     <div class="atmosphere-info-item">
                         <strong data-atmosphere-email-label>Email:</strong> <a href="mailto:hahakitchen723@gmail.com" data-atmosphere-email>hahakitchen723@gmail.com</a>
                     </div>
-                    <div class="atmosphere-info-item">
-                        <strong data-atmosphere-wechat-label>WeChat:</strong> <span data-atmosphere-wechat>haha_kitchen</span>
+                    <div class="atmosphere-info-item atmosphere-wechat-row">
+                        <strong data-atmosphere-wechat-label>WeChat:</strong>
+                        <span data-atmosphere-wechat>haha_kitchen</span>
+                        <button type="button" class="wechat-icon-btn" onclick="openWechatModal()" aria-label="WeChat QR code">
+                            <img src="image/wechat.png" alt="">
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1537,12 +1670,19 @@
                     <h3 data-contact-info>Contact</h3>
                     <p><a href="tel:0481224586">0481 224 586</a></p>
                     <p><a href="mailto:hahakitchen723@gmail.com">hahakitchen723@gmail.com</a></p>
+                    <p class="contact-wechat-line">
+                        <strong data-contact-wechat-label>WeChat:</strong>
+                        <span data-contact-wechat>haha_kitchen</span>
+                    </p>
                     <div class="social-icons">
                         <a href="https://www.facebook.com/HahaKitchenCanterbury" target="_blank" class="social-icon" aria-label="Facebook">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                             </svg>
                         </a>
+                        <button type="button" class="social-icon" onclick="openWechatModal()" aria-label="WeChat">
+                            <img src="image/wechat.png" alt="">
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1552,6 +1692,15 @@
     <!-- 页脚 -->
     <footer>
     </footer>
+
+    <!-- 微信二维码弹窗 -->
+    <div class="wechat-modal" id="wechatModal">
+        <div class="wechat-modal-backdrop" onclick="closeWechatModal()"></div>
+        <div class="wechat-modal-panel" onclick="event.stopPropagation()">
+            <button type="button" class="wechat-modal-close" onclick="closeWechatModal()" aria-label="Close">×</button>
+            <img src="image/wechat.jpg" alt="WeChat QR code">
+        </div>
+    </div>
 
     <script>
         // 语言文本内容
@@ -1839,6 +1988,8 @@
             setText('[data-atmosphere-email]', t.atmosphereEmail);
             setText('[data-atmosphere-wechat-label]', t.atmosphereWechatLabel);
             setText('[data-atmosphere-wechat]', t.atmosphereWechat);
+            setText('[data-contact-wechat-label]', t.atmosphereWechatLabel);
+            setText('[data-contact-wechat]', t.atmosphereWechat);
             
             // 更新联系我们
             setText('[data-opening-hours]', t.openingHours);
@@ -1933,6 +2084,22 @@
             document.getElementById('mobileMenu').classList.remove('active');
             document.getElementById('mobileOverlay').classList.remove('active');
             document.body.style.overflow = '';
+        }
+
+        function openWechatModal() {
+            const wechatModal = document.getElementById('wechatModal');
+            if (wechatModal) {
+                wechatModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeWechatModal() {
+            const wechatModal = document.getElementById('wechatModal');
+            if (wechatModal) {
+                wechatModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         }
 
         // 为每张图片创建独立的状态对象
