@@ -1372,7 +1372,7 @@
 
             <ul class="nav-left" id="navLeft">
                 <li><a href="#about" data-nav-about>About Us</a></li>
-                <li><a href="#promo" data-nav-menu>Menu</a></li>
+                <li><a href="#menu" data-nav-menu>Menu</a></li>
             </ul>
             
             <a href="#" class="logo">
@@ -1398,7 +1398,7 @@
         <button class="mobile-nav-close" onclick="closeMobileMenu()">×</button>
         <ul class="mobile-nav-links">
             <li><a href="#about" onclick="closeMobileMenu()" data-nav-about>About Us</a></li>
-            <li><a href="#promo" onclick="closeMobileMenu()" data-nav-menu>Menu</a></li>
+            <li><a href="#menu" onclick="closeMobileMenu()" data-nav-menu>Menu</a></li>
             <li><a href="#gallery" onclick="closeMobileMenu()" data-nav-gallery>Gallery</a></li>
             <li><a href="#contact" onclick="closeMobileMenu()" data-nav-contact>Contact</a></li>
         </ul>
@@ -1425,14 +1425,13 @@
 
     <!-- 推广板块示例 -->
     <div class="promo-wrapper">
-        <section class="promo-section" id="promo">
+        <section class="promo-section" id="menu">
             <div class="promo-content" data-aos="fade-right" data-aos-duration="1000">
                 <h2 data-promo-title>Signature Tasting</h2>
                 <p data-promo-text>品尝我们匠心独运的美食佳肴，让福建菜的地道灵魂与南方菜的经典风味完美融合。每一道菜都在讲述关于工艺与创新的故事，让您的每一次用餐，都成为一场触动味蕾与记忆的小型旅程。</p>
                 <div class="promo-buttons">
                     <a class="promo-btn" href="javascript:void(0);" onclick="openMenuModal('food')" data-promo-menu>Discover Menu</a>
                     <a class="promo-btn" href="javascript:void(0);" onclick="openMenuModal('beverage')" data-promo-beverage>Discover Beverage</a>
-                    <a class="promo-btn" href="https://www.facebook.com/HahaKitchenCanterbury" target="_blank" data-promo-reservations>Reservations</a>
                 </div>
             </div>
             <div class="promo-visual" data-aos="fade-left" data-aos-duration="1000">
@@ -1579,7 +1578,6 @@
                 promoText: "Savor our meticulously crafted delicacies, where the authentic soul of Fujian cuisine blends seamlessly with classic Southern flavors. Every dish tells a story of craftsmanship and innovation, transforming your dining experience into an intimate journey of taste and memory",
                 promoMenu: "Discover Menu",
                 promoBeverage: "Discover Beverage",
-                promoReservations: "Reservations",
                 
                 // 画廊
                 galleryTitle: "GALLERY",
@@ -1643,7 +1641,6 @@
                 promoText: "品尝我们匠心独运的美食佳肴，让福建菜的地道灵魂与南方菜的经典风味完美融合。每一道菜都在讲述关于工艺与创新的故事，让您的每一次用餐，都成为一场触动味蕾与记忆的小型旅程。",
                 promoMenu: "查看菜谱",
                 promoBeverage: "查看酒水",
-                promoReservations: "立即预订",
                 
                 // 画廊
                 galleryTitle: "相册",
@@ -1822,7 +1819,6 @@
             setText('[data-promo-text]', t.promoText);
             setText('[data-promo-menu]', t.promoMenu);
             setText('[data-promo-beverage]', t.promoBeverage);
-            setText('[data-promo-reservations]', t.promoReservations);
             
             // 更新关于我们
             setText('[data-about-title]', t.aboutTitle);
