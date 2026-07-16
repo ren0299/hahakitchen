@@ -1596,7 +1596,7 @@
                 <h2 data-promo-title>Signature Tasting</h2>
                 <p data-promo-text>品尝我们匠心独运的美食佳肴，让福建菜的地道灵魂与南方菜的经典风味完美融合。每一道菜都在讲述关于工艺与创新的故事，让您的每一次用餐，都成为一场触动味蕾与记忆的小型旅程。</p>
                 <div class="promo-buttons">
-                    <a class="promo-btn" href="javascript:void(0);" onclick="openMenuModal('food')" data-promo-menu>Discover Menu</a>
+                    <a class="promo-btn" href="image/menu.pdf" target="_blank" rel="noopener noreferrer" data-promo-menu>Discover Menu</a>
                     <a class="promo-btn" href="javascript:void(0);" onclick="openMenuModal('beverage')" data-promo-beverage>Discover Beverage</a>
                 </div>
             </div>
@@ -2326,25 +2326,8 @@
             // 清空容器
             menuImagesContainer.innerHTML = '';
             
-            // 根据类型设置图片
-            if (type === 'food') {
-                // 菜单：显示一张图片
-                const img = document.createElement('img');
-                img.id = 'menuImage';
-                img.src = 'image/menu.png';
-                img.alt = 'Menu';
-                menuImagesContainer.appendChild(img);
-                
-                // 初始化触摸事件
-                if (img.complete) {
-                    initMenuImageTouchEvents(img);
-                } else {
-                    img.onload = function() {
-                        initMenuImageTouchEvents(img);
-                    };
-                }
-            } else if (type === 'beverage') {
-                // 酒单：显示两张图片
+            // 酒单：弹窗显示图片（菜单已改为直接打开 PDF）
+            if (type === 'beverage') {
                 const beverageImages = ['image/beverage.png', 'image/beverage2.jpg'];
                 
                 beverageImages.forEach((src, index) => {
@@ -2363,6 +2346,8 @@
                         };
                     }
                 });
+            } else {
+                return;
             }
             
             // 显示弹窗
